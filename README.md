@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.0%2B-red)](https://streamlit.io/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 A Content-Based Movie Recommendation Engine built with Python and Streamlit. This application suggests personalized movie recommendations by analyzing metadata such as genres, keywords, cast, and directors using Cosine Similarity.
 
