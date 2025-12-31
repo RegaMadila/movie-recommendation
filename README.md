@@ -4,7 +4,7 @@ A Streamlit-based web application that suggests movies based on content similari
 
 **Content-Based Filtering**: Uses a "soup" of features including Overview, Genres, Keywords, Cast, and Director.
 
-## 🧠 How It Works
+## How It Works
 
 The system recommends movies by finding ones that are similar to what you like. Here's the simple process:
 
@@ -27,9 +27,3 @@ The system recommends movies by finding ones that are similar to what you like. 
    streamlit run app.py
    ```
 
-## Structure
-- `app.py`: Main Streamlit application.
-- `src/`: Core logic modules.
-  - `data_processing.py`: Data loading, cleaning, soup creation, and weighting.
-  - `recommender.py`: Vectorization and cosine similarity logic.
-- `algorithm_flow.md`: Detailed technical explanation of the algorithm.
