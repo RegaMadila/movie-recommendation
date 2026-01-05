@@ -27,12 +27,11 @@ def main():
     try:
         final_df, raw_movies = get_data()
         model = get_model(final_df)
-        
+
     except Exception as e:
         st.error(f"Error loading data: {e}")
         return
 
-    # Sidebar
     st.sidebar.header("Recommendation Settings")
     selected_movie = st.sidebar.selectbox(
         "Choose a movie you like:",
@@ -45,19 +44,12 @@ def main():
         recommendations = model.recommend(selected_movie, top_n=num_recommendations)
         
         st.subheader(f"Because you liked *{selected_movie}*:")
-        
-        # Display recommendations in a grid
+
         cols = st.columns(5)
         for i, movie_title in enumerate(recommendations):
             with cols[i % 5]:
-                # Get basic info
-                # In a real app we'd fetch posters from TMDB API, but for now just text
                 st.info(movie_title)
-                # Ensure we have the genre info to show
-                # genre = raw_movies[raw_movies['title'] == movie_title]['genres'].values[0]
-                # st.caption(f"Genres: {genre}")
 
-    # About Section
     with st.expander("How does this work?"):
         st.write("""
         This system uses **Content-Based Filtering**. It builds a "soup" of metadata for each movie containing:

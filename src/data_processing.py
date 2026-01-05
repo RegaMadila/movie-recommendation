@@ -63,26 +63,20 @@ def prepare_data(movies, credits):
     """
     print("Processing and merging data...")
     
-    # Merge datasets
     movies = movies.merge(credits, on='title')
     
-    # Select relevant columns  
     movies = movies[['movie_id', 'title', 'overview', 'genres', 'keywords', 'cast', 'crew']]
     
-    # Drop rows with missing overview
     movies.dropna(subset=['overview'], inplace=True)
     
-    # Fill missing values in other columns with empty list string "[]" to prevent parser errors
     for col in ['genres', 'keywords', 'cast', 'crew']:
         movies[col] = movies[col].fillna("[]")
 
-    # Parse JSON columns
     movies['genres'] = movies['genres'].apply(_convert)
     movies['keywords'] = movies['keywords'].apply(_convert)
     movies['cast'] = movies['cast'].apply(_convert3)
     movies['crew'] = movies['crew'].apply(_fetch_director)
     
-    # Apply transformation to remove spaces for better tag matching
     movies['genres'] = movies['genres'].apply(_collapse)
     movies['keywords'] = movies['keywords'].apply(_collapse)
     movies['cast'] = movies['cast'].apply(_collapse)
@@ -97,20 +91,8 @@ def prepare_data(movies, credits):
     movies['cast'] = movies['cast'].apply(lambda x: (x * 3) if isinstance(x, list) else [])
     movies['crew'] = movies['crew'].apply(lambda x: (x * 3) if isinstance(x, list) else [])
 
-    for index, row in movies.iterrows():
-        try:
-            soup_parts = []
-            for col in ['overview', 'genres', 'keywords', 'cast', 'crew']:
-                val = row[col]
-                if isinstance(val, list):
-                    soup_parts += val
-                else:
-                    soup_parts += []
-            tags.append(soup_parts)
-        except Exception as e:
-            tags.append([])
-
-    movies['tags'] = tags
+    # Create tags by combining all lists
+    movies['tags'] = movies.apply(lambda x: x['overview'] + x['genres'] + x['keywords'] + x['cast'] + x['crew'], axis=1)
     
     movies['soup'] = movies['tags'].apply(lambda x: " ".join(x))
     
